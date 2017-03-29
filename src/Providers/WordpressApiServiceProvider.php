@@ -2,7 +2,7 @@
 
 namespace ifour\LaravelWordpressApi\Providers;
 
-use App\Services\WordpressApi;
+use ifour\LaravelWordpressApi\Services\WordpressApi;
 use Illuminate\Support\ServiceProvider;
 
 class WordpressApiServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class WordpressApiServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/wp-api.php' => config_path('wp-api.php'),
+            __DIR__.'/../config/wp-api.php' => config_path('wp-api.php'),
         ]);
     }
 

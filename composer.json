@@ -19,6 +19,5 @@
         "psr-4": {
             "ifour\\LaravelWordpressApi\\": "src/"
         }
-    },
-    "minimum-stability": "stable"
+    }
 }
