@@ -20,5 +20,5 @@
             "ifour\\LaravelWordpressApi\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "dev"
 }
