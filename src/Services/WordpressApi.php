@@ -48,13 +48,17 @@ class WordpressApi
 
                  //check the response code
                  if ($response->code = 200) {
-                     /*
-                      * Return the response as a collection to make manipulation easier
-                      * later on in the application
+                     /**
+                      * Include the total results and the number of pages
+                      * in the returned dataset
                       */
-                     return collect($response->body);
+                    return collect([
+                        'totalResults' => $response->headers['X-WP-Total'],
+                        'totalPages' => $response->headers['X-WP-TotalPages'],
+                        'results' => $response->body
+                    ]);
                  } else {
-                     throw new Exception($response->body);
+                    throw new Exception($response->body);
                  }
 
              });
