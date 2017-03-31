@@ -20,14 +20,14 @@ class WordpressApi
          $this->timeout = $config['timeout'];
      }
 
-     public function pages()
+     public function pages($page=1)
      {
-         return $this->_get('wp/v2/pages');
+         return $this->_get('wp/v2/pages', ['page' => $page]);
      }
 
      public function posts($page=1)
      {
-        return $this->get('wp/v2/posts', ['page' => $page]);
+        return $this->_get('wp/v2/posts', ['page' => $page]);
      }
 
     /**
