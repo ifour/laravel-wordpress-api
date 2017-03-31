@@ -35,16 +35,16 @@ class WordpressApi
      * @param  string - $method - the api method to call
      * @return json - JSON response from the request
      */
-     public function _get($method, $params)
+     public function _get($method, $params = [])
      {
+         //Build a name for this request to store in cache
+         $cacheKey = $method . '-' . implode('-', $params);
+
          try {
              //Check if there's a valid cache entry
-             return Cache::remember($method, $this->timeout, function() use ($method) {
-                 //Set some headers to make sure we get Json back
-                 $headers = ['Accept' => 'application/json'];
-
+             return Cache::remember($cacheKey, $this->timeout, function() use ($method, $params) {
                  //If not send the request
-                 $response = $this->client->get($this->endpoint . $method, $headers, $params);
+                 $response = $this->client->get($this->endpoint . $method, [], $params);
 
                  //check the response code
                  if ($response->code = 200) {
