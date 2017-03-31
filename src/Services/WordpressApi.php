@@ -17,17 +17,17 @@ class WordpressApi
      {
          $this->client = new Unirest\Request;
          $this->endpoint = $config['endpoint'];
-         $this->timeout = $config['timeout'];
+         $this->lifetime = $config['lifetime'];
      }
 
-     public function pages($page=1)
+     public function pages($page=1, $lifetime = null)
      {
-         return $this->_get('wp/v2/pages', ['page' => $page]);
+         return $this->_get('wp/v2/pages', ['page' => $page], $lifetime);
      }
 
-     public function posts($page=1)
+     public function posts($page=1, $lifetime = null)
      {
-        return $this->_get('wp/v2/posts', ['page' => $page]);
+        return $this->_get('wp/v2/posts', ['page' => $page], $lifetime);
      }
 
     /**
@@ -35,20 +35,23 @@ class WordpressApi
      * @param  string - $method - the api method to call
      * @return json - JSON response from the request
      */
-     public function _get($method, $params = [])
+     public function _get($method, $params = [], $lifetime)
      {
-         //Build a name for this request to store in cache
-         $cacheKey = $method . '-' . implode('-', $params);
+        //Work out the cache lifetime is
+        $lifetime = is_null($lifetime) ? $this->lifetime : $lifetime;
 
-         try {
-             //Check if there's a valid cache entry
-             return Cache::remember($cacheKey, $this->timeout, function() use ($method, $params) {
-                 //If not send the request
-                 $response = $this->client->get($this->endpoint . $method, [], $params);
+        //Build a name for this request to store in cache
+        $cacheKey = $method . '-' . implode('-', $params);
 
-                 //check the response code
-                 if ($response->code = 200) {
-                     /**
+        try {
+            //Check if there's a valid cache entry
+            return Cache::remember($cacheKey, $lifetime, function() use ($method, $params) {
+                //If not send the request
+                $response = $this->client->get($this->endpoint . $method, [], $params);
+
+                //check the response code
+                if ($response->code === 200) {
+                    /**
                       * Include the total results and the number of pages
                       * in the returned dataset
                       */
@@ -63,8 +66,8 @@ class WordpressApi
 
              });
 
-         } catch (Exception $e) {
-             return 'API request failed: ' . $e->getMessage();
-         }
+        } catch (Exception $e) {
+            return 'API request failed: ' . $e->getMessage();
+        }
      }
 }

@@ -13,6 +13,6 @@
 return [
     'wordpress' => [
         'endpoint' => env('WORDPRESS_API_ENDPOINT', 'https://reqres.in/api/'),
-        'timeout' => env('WORDPRESS_API_CACHETIME', 360) //Cache lifetime (mins)
+        'lifetime' => env('WORDPRESS_API_CACHE_LIFETIME', 360) //Cache lifetime (mins)
     ],
 ];
