@@ -32,7 +32,7 @@ class WordpressApi
 
      public function page($slug)
      {
-         return $this->get('wp/v2/pages', ['type' => 'page', 'filter' => ['name' => $slug]], $lifetime);
+         return $this->_get('wp/v2/pages', ['type' => 'page', 'filter' => ['name' => $slug]], $lifetime);
      }
 
      /**
