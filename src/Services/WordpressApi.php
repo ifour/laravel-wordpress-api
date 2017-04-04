@@ -117,45 +117,4 @@ class WordpressApi
 
          return $this->get('wp/v2/pages', ['type' => 'page', 'filter' => ['name' => $slug]], $lifetime);
      }
-
-    /**
-     * Process the required request and return a suitable json response
-     * @param  string - $method - the api method to call
-     * @return json - JSON response from the request
-     */
-     public function _get($method, $params = [], $lifetime)
-     {
-        //Work out the cache lifetime is
-        $lifetime = is_null($lifetime) ? $this->lifetime : $lifetime;
-
-        //Build a name for this request to store in cache
-        $cacheKey = $method . '-' . implode('-', $params);
-
-        try {
-            //Check if there's a valid cache entry
-            return Cache::remember($cacheKey, $lifetime, function() use ($method, $params) {
-                //If not send the request
-                $response = $this->client->get($this->endpoint . $method, [], $params);
-
-                //check the response code
-                if ($response->code === 200) {
-                    /**
-                      * Include the total results and the number of pages
-                      * in the returned dataset
-                      */
-                    return collect([
-                        'totalResults' => $response->headers['X-WP-Total'],
-                        'totalPages' => $response->headers['X-WP-TotalPages'],
-                        'results' => $response->body
-                    ]);
-                 } else {
-                    throw new Exception($response->body);
-                 }
-
-             });
-
-        } catch (Exception $e) {
-            return 'API request failed: ' . $e->getMessage();
-        }
-     }
 }
