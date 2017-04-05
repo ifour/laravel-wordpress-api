@@ -41,6 +41,11 @@ class WordpressApi
          return $this->_get('wp/v2/posts?slug='. $slug, [], $lifetime);
      }
 
+     public function get_custom_post_by_name($post_type, $post_name, $lifetime = null)
+     {
+         return $this->_get('wp/v2/' . $post_type . '?slug=' . $post_name, [], $lifetime);
+     }
+
      public function textblock($slug, $lifetime = null) {
          return $this->_get('ifour/v1/text-blocks/' . $slug, [], $lifetime);
      }
