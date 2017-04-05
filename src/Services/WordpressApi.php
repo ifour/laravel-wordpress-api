@@ -23,7 +23,7 @@ class WordpressApi
 
      public function pages($page=1, $lifetime = null)
      {
-         return $this->_get('wp/v2/pages', ['page' => $page], $lifetime);
+        return $this->_get('wp/v2/pages', ['page' => $page], $lifetime);
      }
 
      public function posts($page=1, $lifetime = null)
@@ -33,21 +33,25 @@ class WordpressApi
 
      public function page($slug, $lifetime = null)
      {
-         return $this->_get('wp/v2/pages?slug='. $slug, [], $lifetime);
+        return $this->_get('wp/v2/pages?slug='. $slug, [], $lifetime);
      }
 
      public function post($slug, $lifetime = null)
      {
-         return $this->_get('wp/v2/posts?slug='. $slug, [], $lifetime);
+        return $this->_get('wp/v2/posts?slug='. $slug, [], $lifetime);
      }
 
      public function get_custom_post_by_name($post_type, $post_name, $lifetime = null)
      {
-         return $this->_get('wp/v2/' . $post_type . '?slug=' . $post_name, [], $lifetime);
+        return $this->_get('wp/v2/' . $post_type . '?slug=' . $post_name, [], $lifetime);
      }
 
      public function textblock($slug, $lifetime = null) {
-         return $this->_get('ifour/v1/text-blocks/' . $slug, [], $lifetime);
+        return $this->_get('ifour/v1/text-blocks/' . $slug, [], $lifetime);
+     }
+
+     public function menu($slug, $lifetime = null) {
+        return $this->_get('wp-api-menus/v2/menu-locations/' . $slug, [], $lifetime);
      }
 
 
@@ -81,8 +85,8 @@ class WordpressApi
                       * in the returned dataset
                       */
                     return collect([
-                        'totalResults' => $response->headers['X-WP-Total'],
-                        'totalPages' => $response->headers['X-WP-TotalPages'],
+                        'totalResults' => isset($response->headers['X-WP-Total']) ? $response->headers['X-WP-Total']: false,
+                        'totalPages' => isset($response->headers['X-WP-TotalPages']) ? $response->headers['X-WP-TotalPages']: false,
                         'results' => $response->body
                     ]);
                  } else {
