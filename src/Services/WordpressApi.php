@@ -35,6 +35,10 @@ class WordpressApi
          return $this->_get('wp/v2/posts?slug='. $slug, [], $lifetime);
      }
 
+     public function textblock($slug, $lifetime = null) {
+         return $this->_get('ifour/v1/text-blocks/' . $slug, [], $lifetime);
+     }
+
      /**
       * Process the required request and return a suitable json response
       * @param  string - $method - the api method to call
