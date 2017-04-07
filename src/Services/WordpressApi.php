@@ -23,27 +23,47 @@ class WordpressApi
 
      public function pages($page=1, $lifetime = null)
      {
-        return $this->_get('wp/v2/pages', ['page' => $page], $lifetime);
+        return $this->_get('wp/v2/pages?_embed', [
+            '_embed' => 1,
+            'page' => $page
+        ], $lifetime);
      }
 
      public function posts($page=1, $lifetime = null)
      {
-        return $this->_get('wp/v2/posts', ['page' => $page], $lifetime);
+        return $this->_get('wp/v2/posts', [
+            '_embed' => 1,
+            'page' => $page
+        ], $lifetime);
+     }
+
+     public function people($page=1, $lifetime = null)
+     {
+        return $this->_get('wp/v2/our-people', [
+            '_embed' => 1,
+            'page' => $page
+        ], $lifetime);
      }
 
      public function page($slug, $lifetime = null)
      {
-        return $this->_get('wp/v2/pages?slug='. $slug, [], $lifetime);
+        return $this->_get('wp/v2/pages?slug='. $slug, [
+            '_embed' => 1
+        ], $lifetime);
      }
 
      public function post($slug, $lifetime = null)
      {
-        return $this->_get('wp/v2/posts?slug='. $slug, [], $lifetime);
+        return $this->_get('wp/v2/posts?slug='. $slug, [
+            '_embed' => 1
+        ], $lifetime);
      }
+
+
 
      public function get_custom_post_by_name($post_type, $post_name, $lifetime = null)
      {
-        return $this->_get('wp/v2/' . $post_type . '?slug=' . $post_name, [], $lifetime);
+        return $this->_get('wp/v2/' . $post_type . '?_embed&slug=' . $post_name, [], $lifetime);
      }
 
      public function textblock($slug, $lifetime = null) {
@@ -68,10 +88,6 @@ class WordpressApi
         //Build a name for this request to store in cache
         $cacheKey = $method . '-' . implode('-', array_flatten($params));
 
-        if (App::environment('local')) {
-            Cache::forget($cacheKey);
-        }
-
         try {
             //Check if there's a valid cache entry
             return Cache::remember($cacheKey, $lifetime, function() use ($method, $params) {
@@ -80,6 +96,7 @@ class WordpressApi
 
                 //check the response code
                 if ($response->code === 200) {
+
                     /**
                       * Include the total results and the number of pages
                       * in the returned dataset
