@@ -59,6 +59,15 @@ class WordpressApi
         ], $lifetime);
      }
 
+     public function get_category_by_id(int $id, $lifetime = null) {
+         return $this->_get('wp/v2/categories/' . $id, [], $lifetime);
+     }
+
+     public function categories($lifetime = null)
+     {
+         return $this->_get('wp/v2/categories', [], $lifetime);
+     }
+
 
 
      public function get_custom_post_by_name($post_type, $post_name, $lifetime = null)
