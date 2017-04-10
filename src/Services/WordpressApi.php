@@ -37,14 +37,6 @@ class WordpressApi
         ], $lifetime);
      }
 
-     public function people($page=1, $lifetime = null)
-     {
-        return $this->_get('wp/v2/our-people', [
-            '_embed' => 1,
-            'page' => $page
-        ], $lifetime);
-     }
-
      public function page($slug, $lifetime = null)
      {
         return $this->_get('wp/v2/pages?slug='. $slug, [
@@ -73,14 +65,6 @@ class WordpressApi
      public function get_custom_post_by_name($post_type, $post_name, $lifetime = null)
      {
         return $this->_get('wp/v2/' . $post_type . '?_embed&slug=' . $post_name, [], $lifetime);
-     }
-
-     public function textblock($slug, $lifetime = null) {
-        return $this->_get('ifour/v1/text-blocks/' . $slug, [], $lifetime);
-     }
-
-     public function menu($slug, $lifetime = null) {
-        return $this->_get('wp-api-menus/v2/menu-locations/' . $slug, [], $lifetime);
      }
 
 
